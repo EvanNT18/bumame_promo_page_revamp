@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { ChatBubble } from "@/components/common/chat-us/client";
+import ScrollToTop from "@/components/common/scroll-to-top/client";
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,6 +32,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <ChatBubble />
+        <ScrollToTop />
       </body>
     </html>
   );
