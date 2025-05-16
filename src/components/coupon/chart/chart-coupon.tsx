@@ -2,7 +2,7 @@
 import { useToast } from "@/hooks/use-toast";
 import React, { useState } from "react";
 import Link from "next/link";
-import { CopyIcon } from "lucide-react";
+import { Check as CheckIcon, CopyIcon } from "lucide-react";
 
 const CouponCard = ({
     description,
@@ -13,18 +13,12 @@ const CouponCard = ({
     logoUrl: string;
     couponCode: string;
 }) => {
-    const { toast } = useToast();
     const [copied, setCopied] = useState(false);
 
     const handleCopy = () => {
         navigator.clipboard.writeText(couponCode);
+        
         setCopied(true);
-        toast({
-            title: "Kode disalin!",
-            description: `Kode ${couponCode} telah disalin ke clipboard.`,
-            duration: 2000,
-        });
-
         setTimeout(() => {
             setCopied(false);
         }, 2000);
@@ -51,16 +45,18 @@ const CouponCard = ({
                 {/* Coupon code section */}
                 <div className="mt-4 flex items-center justify-between">
                     <div className="flex items-center">
-                        <span className="bg-blue-100 p-1 rounded mr-2">
-                            <CopyIcon className="w-4 h-4 text-blue-600" />
+                        <span className="bg-blue-100 p-1 rounded mr-2 transition-colors hover:bg-blue-200 cursor-pointer" onClick={handleCopy}>
+                            {/* <CopyIcon className="w-4 h-4 text-blue-600" /> */}
+                            {copied ? (
+                                <CheckIcon className="w-4 h-4 text-blue-600" />
+                            ) : (
+                                <CopyIcon className="w-4 h-4 text-green-600" />
+                            )}
                         </span>
                         <span className="text-sm font-medium text-gray-700">{couponCode}</span>
                     </div>
 
-                    <Link target="_blank" href="https://api.whatsapp.com/send/?phone=6281119088808&text=Hi+Bumame%2C+I+want+to+redeem+my+code%3A+BUMAMEBNI10&type=phone_number&app_absent=0" className={`px-4 py-1.5 rounded-md ${copied
-                        ? "bg-green-100 text-green-700"
-                        : "bg-blue-100 text-blue-600 hover:bg-blue-200"
-                        } transition-colors focus:outline-none`}>
+                    <Link target="_blank" href="https://api.whatsapp.com/send/?phone=6281119088808&text=Hi+Bumame%2C+I+want+to+redeem+my+code%3A+BUMAMEBNI10&type=phone_number&app_absent=0" className={`px-4 py-1.5 rounded-md bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors focus:outline-none`}>
                         Redeem
                     </Link>
                 </div>

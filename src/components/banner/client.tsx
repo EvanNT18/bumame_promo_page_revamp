@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import React, { useState } from "react";
 import { Banner } from "@/types/Partner";
 
@@ -8,19 +7,14 @@ const BannerPage = ({
 } : {
     banners: Banner[]
 }) => {
-    const bannerImages = [
-        "/banner/bni.png",
-        "/banner/another-image.png",
-        "/banner/yet-another-image.png"
-    ];
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const nextSlide = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % bannerImages.length);
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % banners.length);
     };
 
     const prevSlide = () => {
-        setCurrentIndex((prevIndex) => (prevIndex - 1 + bannerImages.length) % bannerImages.length);
+        setCurrentIndex((prevIndex) => (prevIndex - 1 + banners.length) % banners.length);
     };
 
     return (
@@ -32,7 +26,7 @@ const BannerPage = ({
                         key={index}
                         src={banner.imageUrl}
                         alt={`Banner ${index + 1}`}
-                        className="object-cover w-full h-full"
+                        className={`object-cover w-full h-full ${index === currentIndex ? 'block' : 'hidden'}`}
                         width={1200}
                         height={675}
                         // priority
@@ -61,7 +55,7 @@ const BannerPage = ({
 
                 {/* Indicator dots */}
                 <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                    {bannerImages.map((_, index) => (
+                    {banners.map((_, index) => (
                         <button
                             key={index}
                             onClick={() => setCurrentIndex(index)}

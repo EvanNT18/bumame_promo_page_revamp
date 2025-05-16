@@ -29,7 +29,11 @@ export default function LandingPagePromo({ params } : { params: any }) {
   }
 
   if (!partner) {
-    return <div>Loading...</div>;
+    return (
+      <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-50 flex items-center justify-center">
+        <div className="h-12 w-12 border-b-2 border-blue-500 rounded-full animate-spin"></div>
+      </div>
+    );
   }
 
   return (
