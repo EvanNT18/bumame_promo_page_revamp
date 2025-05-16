@@ -1,8 +1,13 @@
 "use client";
 import Image from "next/image";
 import React, { useState } from "react";
+import { Banner } from "@/types/Partner";
 
-const Banner = () => {
+const BannerPage = ({
+    banners
+} : {
+    banners: Banner[]
+}) => {
     const bannerImages = [
         "/banner/bni.png",
         "/banner/another-image.png",
@@ -21,14 +26,18 @@ const Banner = () => {
     return (
         <div className="relative w-full mx-auto overflow-hidden shadow-xl">
             <div className="relative aspect-video"> {/* Fixed aspect ratio (16:9) */}
-                <Image
-                    src={bannerImages[currentIndex]}
-                    alt={`Banner ${currentIndex + 1}`}
-                    className="object-cover w-full h-full"
-                    width={1200}
-                    height={675}
-                    priority
-                />
+
+                {banners.map((banner, index) => (
+                    <img
+                        key={index}
+                        src={banner.imageUrl}
+                        alt={`Banner ${index + 1}`}
+                        className="object-cover w-full h-full"
+                        width={1200}
+                        height={675}
+                        // priority
+                    />
+                ))}
 
                 {/* Navigation buttons */}
                 <button
@@ -66,4 +75,4 @@ const Banner = () => {
     );
 };
 
-export default Banner;
+export default BannerPage;

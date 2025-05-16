@@ -4,18 +4,15 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { CopyIcon } from "lucide-react";
 
-interface CouponCardProps {
-    discount: string;
-    minTransaction: string;
-    cardType: string;
-    couponCode: string;
-}
-
 const CouponCard = ({
-    discount,
-    minTransaction,
+    description,
+    logoUrl,
     couponCode,
-}: CouponCardProps) => {
+}: {
+    description: string;
+    logoUrl: string;
+    couponCode: string;
+}) => {
     const { toast } = useToast();
     const [copied, setCopied] = useState(false);
 
@@ -40,14 +37,14 @@ const CouponCard = ({
 
             <div className="p-4 pl-6">
                 {/* Bank logo */}
-                <div className="flex items-center mb-2">
-                    <span className="text-blue-600 font-bold mr-1">BCA</span>
+                <div className="flex items-center mb-2"
+                >
+                    <img src={logoUrl} alt="Bank logo" className="w-8 h-8" />
+                    
                 </div>
-
                 <div className="flex items-start justify-between">
                     <div>
-                        <h3 className="font-bold text-lg text-gray-800">{discount}</h3>
-                        <p className="text-xs text-gray-500 mt-1">{minTransaction}</p>
+                        <p className="text-xs text-gray-500 mt-1">{description}</p>
                     </div>
                 </div>
 
