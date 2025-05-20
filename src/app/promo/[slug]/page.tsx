@@ -12,7 +12,7 @@ import { useState, useEffect } from "react";
 import { Partner } from "@/types/Partner";
 import api from "@/lib/api";
 
-export default function LandingPagePromo({ params } : { params: any }) {
+export default function LandingPagePromo({ params }: { params: any }) {
   const { slug } = params;
   const [partner, setPartner] = useState<Partner | null>(null);
 
@@ -26,6 +26,11 @@ export default function LandingPagePromo({ params } : { params: any }) {
     });
 
     setPartner(res.data);
+    document.title = res.data.name;
+    // const links = Array.from(document.getElementsByTagName("link"));
+    // const favicon = links.find((link) => link.rel === "icon");
+    // if (favicon) favicon.href = res.data.logoUrl;
+    (document.querySelector("link[rel='icon']") as HTMLLinkElement).href = res.data.logoUrl;
   }
 
   if (!partner) {
@@ -37,15 +42,17 @@ export default function LandingPagePromo({ params } : { params: any }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="mx-auto px-4">
+    <>
+      <div className="min-h-screen bg-gray-50">
+        <div className="mx-auto px-4">
+        </div>
+        <Banner banners={partner.banners} />
+        <Subtitle subtitles={partner.subtitles} />
+        <CouponPage partner={partner} vouchers={partner.vouchers} />
+        <HowToRedeem />
+        <TermsAndConditions terms={partner.terms} />
+        <FAQ faqs={partner.faqs} />
       </div>
-      <Banner banners={partner.banners} />
-      <Subtitle subtitles={partner.subtitles} />
-      <CouponPage partner={partner} vouchers={partner.vouchers} />
-      <HowToRedeem />
-      <TermsAndConditions terms={partner.terms} />
-      <FAQ faqs={partner.faqs} />
-    </div>
+    </>
   );
 }

@@ -19,12 +19,14 @@ const CouponPage = ({
           Use this code when chatting with our staff to claim your discount.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {vouchers.map((vouchers, index) => (
+          {vouchers.map((voucher, index) => (
             <CouponCard
               key={index}
+              partnerName={partner.name}
+              title={voucher.title}
               logoUrl={partner.logoUrl}
-              couponCode={vouchers.voucherCode}
-              description={vouchers.description}
+              couponCode={voucher.voucherCode}
+              description={voucher.description}
             />
           ))}
         </div>

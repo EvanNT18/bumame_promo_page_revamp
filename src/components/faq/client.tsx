@@ -17,7 +17,7 @@ export default function FAQPage({
     }
 
     return (
-        <div className="max-w-4xl mx-auto px-4 py-12">
+        <div className="max-w-7xl mx-auto px-4 py-12">
             <h1 className="text-4xl font-bold text-center text-[#1a1a5c] mb-12">Frequently Asked Questions</h1>
 
             {/* FAQ Items */}
