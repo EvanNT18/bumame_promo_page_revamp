@@ -12,7 +12,7 @@ const CouponPage = ({
 }) => {
 
   return (
-    <div className="py-8 px-4 md:px-6 bg-purple-50">
+    <div className="py-8 px-4 md:px-6 rounded-xl bg-blue-100">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-2xl font-bold text-center text-[#204eab] mb-2">Your Exclusive Voucher Code</h2>
         <p className="text-center text-[#2d58b0] max-w-2xl mx-auto mb-8">

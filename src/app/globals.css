@@ -111,18 +111,18 @@
 }
 
 .rich-text-content h1 {
-  font-size: 1.75rem; /* 28px */
-  font-weight: 800; /* Extra bold for main heading */
+  font-size: 2rem;
+  font-weight: 800;
 }
 
 .rich-text-content h2 {
-  font-size: 1.5rem; /* 24px */
-  font-weight: 700; /* Bold for subheadings */
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
 .rich-text-content h3 {
-  font-size: 1.25rem; /* 20px */
-  font-weight: 600; /* Semi-bold for tertiary headings */
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 .rich-text-content p {

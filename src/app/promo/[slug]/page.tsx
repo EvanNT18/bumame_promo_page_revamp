@@ -11,6 +11,7 @@ import CouponPage from "@/components/coupon/coupon";
 import { useState, useEffect } from "react";
 import { Partner } from "@/types/Partner";
 import api from "@/lib/api";
+import Image from "next/image";
 
 export default function LandingPagePromo({ params }: { params: any }) {
   const { slug } = params;
@@ -44,14 +45,46 @@ export default function LandingPagePromo({ params }: { params: any }) {
   return (
     <>
       <div className="min-h-screen bg-gray-50">
-        <div className="mx-auto px-4">
+        <div className="container mx-auto px-4 pb-16 sm:px-6 lg:px-8">
+          <Banner banners={partner.banners} />
         </div>
-        <Banner banners={partner.banners} />
-        <Subtitle subtitles={partner.subtitles} />
-        <CouponPage partner={partner} vouchers={partner.vouchers} />
-        <HowToRedeem />
-        <TermsAndConditions terms={partner.terms} />
-        <FAQ faqs={partner.faqs} />
+        <div className="container mx-auto px-4 pb-16 sm:px-6 lg:px-8">
+          <Subtitle subtitles={partner.subtitles} />
+        </div>
+        <div className="container mx-auto px-4 pb-16 sm:px-6 lg:px-8">
+          <CouponPage partner={partner} vouchers={partner.vouchers} />
+        </div>
+        <div className="container mx-auto px-4 pb-16 sm:px-6 lg:px-8">
+          <HowToRedeem />
+        </div>
+        <div className="container mx-auto px-4 pb-16 sm:px-6 lg:px-8">
+          <TermsAndConditions terms={partner.terms} />
+        </div>
+        <div className="container mx-auto px-4 pb-16 sm:px-6 lg:px-8">
+          <FAQ faqs={partner.faqs} />
+        </div>
+        <footer className="container mx-auto px-4 pb-16 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <Image
+                src="/logo/bumame_b.png"
+                alt="Bumame Logo"
+                width={40}
+                height={40}
+                className=""
+              />
+              <p className="font-semibold text-xl" style={{ fontFamily: `ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,"Noto Color Emoji"` }}>Bumame</p>
+            </div>
+            <p className="text-center text-gray-500 text-sm">
+              © {new Date().getFullYear()} Bumame. All rights reserved.
+            </p>
+            <div className="flex items-center space-x-4">
+              <a href="#" className="text-gray-500 hover:text-gray-700">
+                Privacy Policy
+              </a>
+            </div>
+          </div>
+        </footer>
       </div>
     </>
   );
