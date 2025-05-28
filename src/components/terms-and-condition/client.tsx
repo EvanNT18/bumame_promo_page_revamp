@@ -12,7 +12,7 @@ export default function TermsAndConditions({
 
     return (
         <div className="mx-auto rounded-lg px-4 py-12 max-w-7xl">
-            <h1 className="text-4xl md:text-5xl font-bold text-center text-[#1a1a5c] mb-6">
+            <h1 className="text-2xl md:text-4xl font-bold text-center text-[#1a1a5c] mb-12">
                 Terms of Service
             </h1>
 

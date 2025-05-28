@@ -1,28 +1,33 @@
 "use client"
 
 import { CheckCircle } from "lucide-react"
+import Image from "next/image"
 
 export default function HowToRedeem() {
     const steps = [
         {
             title: 'Click "Reedem on WhatsApp"',
             description: "Tap the button at the top of this page to open WhatsApp.",
-            icon: <CheckCircle className="text-green-500" />
+            icon: <CheckCircle className="text-green-500" />,
+            image: "/step/step1.png"
         },
         {
             title: "Check Pre-filled Message",
             description: "Verify that your voucher code appears in the WhatsApp message.",
-            icon: <CheckCircle className="text-green-500" />
+            icon: <CheckCircle className="text-green-500" />,
+            image: "/step2.png"
         },
         {
             title: "Send the Message",
             description: "Send the pre-filled message to Bumame Customer Service.",
-            icon: <CheckCircle className="text-green-500" />
+            icon: <CheckCircle className="text-green-500" />,
+            image: "/step3.png"
         },
         {
             title: "Enjoy Your Discount",
             description: "Your discount will be applied to eligible service.",
-            icon: <CheckCircle className="text-green-500" />
+            icon: <CheckCircle className="text-green-500" />,
+            image: "/step4.png"
         }
     ]
 
@@ -36,12 +41,13 @@ export default function HowToRedeem() {
                         key={index}
                         className={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-28 items-center`}
                     >
-                        {/* Image placeholder - replace with your actual image */}
-                        <div className="bg-gray-100 rounded-xl p-8 flex items-center justify-center w-full md:w-1/2 min-h-[250px]">
-                            <div className="text-center">
-                                <div className="text-5xl mb-4">📱</div>
-                                <p className="text-gray-500">Step {index + 1} screenshot</p>
-                            </div>
+                        {/* Image container - replace src with your actual image */}
+                        <div className="rounded-xl overflow-hidden w-[250px] md:w-1/2 min-h-[250px] relative">
+                            <img
+                                src={step.image}
+                                alt={`Step ${index + 1} illustration`}
+                                className="object-cover"        
+                            />
                         </div>
 
                         {/* Text content */}

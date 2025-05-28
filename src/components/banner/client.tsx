@@ -21,28 +21,27 @@ const BannerPage = ({
     // Jika tidak ada banner, tampilkan pesan "No Banner"
     if (banners.length === 0) {
         return (
-            <div className="relative aspect-[3/1] flex items-center justify-center bg-gray-100 rounded-xl">
+            <div className="relative aspect-[1/1] lg:aspect-[3/1] flex items-center justify-center bg-gray-100 rounded-xl">
                 <p className="text-gray-500 text-md">No Banner Available</p>
             </div>
         );
     }
 
     return (
-        <div className="relative aspect-[16/9] mt-4 lg:aspect-[3/1] rounded-xl overflow-hidden shadow-sm"> {/* Aspect ratio 3:1 dan rounded corners */}
+        <div className="relative aspect-[3/1] lg:mx-4 lg:my-4  lg:rounded-xl overflow-hidden shadow-sm"> {/* Aspect ratio 3:1 dan rounded corners */}
             {banners.map((banner, index) => (
                 <Image
                     key={index}
                     src={banner.imageUrl}
                     alt={`Banner ${index + 1}`}
-                    className={`object-cover w-full h-full ${index === currentIndex ? 'block' : 'hidden'}`}
+                    className={`object-contain w-full ${index === currentIndex ? 'block' : 'hidden'}`}
                     width={1200}
-                    height={400}
+                    height={1200}
                     priority={index === 0}
                 />
             ))}
 
-            {banners.length > 1 && (
-                <>
+                <div style={{ display: banners.length > 1 ? "block" : "none" }}>
                     {/* Navigation buttons */}
                     <button
                         onClick={prevSlide}
@@ -73,8 +72,7 @@ const BannerPage = ({
                             />
                         ))}
                     </div>
-                </>
-            )}
+                </div>
         </div>
 
     );
