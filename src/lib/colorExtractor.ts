@@ -87,7 +87,7 @@ function loadImage(url: string): Promise<HTMLImageElement> {
         img.crossOrigin = 'Anonymous';
         img.onload = () => resolve(img);
         img.onerror = reject;
-        img.src = url;
+        img.src = `${process.env.NEXT_PUBLIC_API_URL!}/proxy?url=${encodeURIComponent(url)}`;
     });
 }
 
