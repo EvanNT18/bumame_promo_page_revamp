@@ -10,7 +10,6 @@ export interface Partner {
   banners: Banner[];
   faqs: FAQ[];
   subtitles: Subtitle[];
-  terms: Terms[];
 }
 
 export interface Voucher {
@@ -20,6 +19,8 @@ export interface Voucher {
   title: string;
   voucherCode: string;
   description: string;
+  terms: Terms[];
+  slug?:string;
 }
 
 export interface Banner {
@@ -28,6 +29,8 @@ export interface Banner {
   updated_at: string;
   filename: string;
   imageUrl: string;
+  gradientStartColor?: string;
+  gradientEndColor?: string;
 }
 
 export interface FAQ {

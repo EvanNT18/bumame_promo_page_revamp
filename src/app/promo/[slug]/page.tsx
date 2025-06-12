@@ -12,106 +12,110 @@ import { Partner } from "@/types/Partner";
 import api from "@/lib/api";
 import Image from "next/image";
 
-export default function LandingPagePromo({ params }: { params: any }) {
+export default function LandingPagePromo({
+  params,
+}: {
+  params: { slug: string };
+}) {
   const { slug } = params;
   const [partner, setPartner] = useState<Partner | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchPartner();
   }, []);
 
   async function fetchPartner() {
-    const res = await api({
-      url: `/partners/by_slug/${slug}`,
-    });
+    try {
+      const res = await api({
+        url: `/partners/by_slug/${slug}`,
+      });
 
-    setPartner(res.data);
-    document.title = res.data.name;
-    // const links = Array.from(document.getElementsByTagName("link"));
-    // const favicon = links.find((link) => link.rel === "icon");
-    // if (favicon) favicon.href = res.data.logoUrl;
-    (document.querySelector("link[rel='icon']") as HTMLLinkElement).href = res.data.logoUrl;
+      setPartner(res.data);
+      document.title = res.data.name;
+
+      const favicon = document.querySelector(
+        "link[rel='icon']"
+      ) as HTMLLinkElement;
+      if (favicon) favicon.href = res.data.logoUrl;
+    } catch (err) {
+      console.error("Failed to load partner:", err);
+    } finally {
+      setLoading(false);
+    }
   }
 
-  if (!partner) {
+  if (loading || !partner) {
     return (
-      <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-50 flex items-center justify-center">
-        <div className="h-12 w-12 border-b-2 border-blue-500 rounded-full animate-spin"></div>
+      <div className="fixed inset-0 bg-gray-50 flex items-center justify-center">
+        <div className="h-12 w-12 border-b-2 border-purple-500 rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <>
-      <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white text-gray-800">
+      {/* Hero Banner */}
+      <section className="relative overflow-hidden">
+        <Banner banners={partner.banners} />
+      </section>
 
-        {/* Banners */}
-        <div className="mx-auto lg:pb-16">
-          <Banner banners={partner.banners} />
-        </div>
-        {/* EOL Banners */}
-
-        {/* Subtitles */}
-        <div className="container mx-auto lg:pb-16">
+      {/* Subtitles */}
+      <section className="py-12 bg-gray-50">
+        <div className="container mx-auto px-4">
           <Subtitle subtitles={partner.subtitles} />
         </div>
-        {/* EOL Subtitles */}
+      </section>
 
-        {/* Voucher Code */}
-        <div className="container mx-auto pb-16 sm:px-2 lg:px-4">
+      {/* Voucher Cards */}
+      <section id="vouchers" className="py-16 bg-white">
+        <div className="container mx-auto px-4">
           <CouponPage partner={partner} vouchers={partner.vouchers} />
         </div>
-        {/* EOL Voucher Code */}
+      </section>
 
-        {/* How to Redeem */}
-        <div className="container mx-auto max-w-2xl pb-16">
+      {/* How to Redeem */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4 mb-20 max-w-3xl">
           <HowToRedeem />
         </div>
-        {/* EOL How to Redeem */}
+      </section>
 
-        {/* Terms and Conditions */}
-        <div className="container mx-auto max-w-2xl pb-16">
-          <TermsAndConditions terms={partner.terms} />
+      {/* FAQ */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-7 max-w-3xl">
+          <FAQ faqs={partner.faqs || []} />
         </div>
-        {/* EOL Terms and Conditions */}
+      </section>
 
-        {/* FAQ */}
-        <div className="container mx-auto max-w-2xl pb-16">
-          <FAQ faqs={partner.faqs} />
-        </div>
-        {/* EOL FAQ */}
-
-        <footer className="bg-gray-100 w-full">
-          <div className="container mx-auto p-4 md:p-6">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <div className="flex items-center space-x-4">
-                <Image
-                  src="/logo/bumame_b.png"
-                  alt="Bumame Logo"
-                  width={40}
-                  height={40}
-                  className=""
-                />
-                <p className="font-semibold text-xl" style={{ fontFamily: `ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,"Noto Color Emoji"` }}>
-                  Bumame
-                </p>
-              </div>
-
-              <div className="">
-                <p className="text-center text-gray-500 text-sm order-first md:order-none">
-                  © {new Date().getFullYear()} Bumame. All rights reserved.
-                </p>
-              </div>
-
-              <div className="flex items-center space-x-4">
-                <a href="#" className="text-gray-500 hover:text-gray-700 text-sm">
-                  Privacy Policy
-                </a>
-              </div>
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <Image
+                src="/logo/bumame_b.png"
+                alt="Bumame Logo"
+                width={32}
+                height={32}
+                className="rounded"
+              />
+              <span className="text-xl font-bold">Bumame</span>
+            </div>
+            <div className="flex items-center gap-6 text-sm text-gray-400">
+              <span>
+                © {new Date().getFullYear()} Bumame. All rights reserved.
+              </span>
+              <a href="#" className="hover:text-white transition-colors">
+                Privacy Policy
+              </a>
+              <a href="#" className="hover:text-white transition-colors">
+                Terms of Service
+              </a>
             </div>
           </div>
-        </footer>
-      </div>
-    </>
+        </div>
+      </footer>
+    </div>
   );
 }

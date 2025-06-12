@@ -1,70 +1,74 @@
-"use client";
+import { Card, CardContent } from "@/components/ui/card";
+import { Clipboard, MessageSquare, Share2 } from "lucide-react";
 
-import { CheckCircle } from "lucide-react";
-import Image from "next/image";
+const steps = [
+  {
+    number: 1,
+    title: "Copy Your Code",
+    description: "Tap the copy button to save your voucher code",
+    icon: Clipboard,
+    color: "bg-purple-100 text-purple-600",
+  },
+  {
+    number: 2,
+    title: "Contact via WhatsApp",
+    description: "Click the WhatsApp button to start your conversation",
+    icon: MessageSquare,
+    color: "bg-purple-100 text-purple-600",
+  },
+  {
+    number: 3,
+    title: "Share Your Code",
+    description: "Paste your voucher code in the chat to apply discount",
+    icon: Share2,
+    color: "bg-purple-100 text-purple-600",
+  },
+];
 
 export default function HowToRedeem() {
-  const steps = [
-    {
-      title: 'Click "Reedem on WhatsApp"',
-      description: "Tap the button at the top of this page to open WhatsApp.",
-      icon: <CheckCircle className="text-green-500" />,
-      image: "/reedem/step1.png",
-    },
-    {
-      title: "Check Pre-filled Message",
-      description:
-        "Verify that your voucher code appears in the WhatsApp message.",
-      icon: <CheckCircle className="text-green-500" />,
-      image: "/reedem/step2.png",
-    },
-    {
-      title: "Send the Message",
-      description: "Send the pre-filled message to Bumame Customer Service.",
-      icon: <CheckCircle className="text-green-500" />,
-      image: "/reedem/step3.png",
-    },
-    {
-      title: "Enjoy Your Discount",
-      description: "Your discount will be applied to eligible service.",
-      icon: <CheckCircle className="text-green-500" />,
-      image: "/reedem/step4.png",
-    },
-  ];
-
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
-      <h2 className="text-3xl font-bold text-center mb-12">
-        How to redeem your code
-      </h2>
+    <div className="max-w-4xl mx-auto px-4">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">
+          How to Redeem Your Voucher
+        </h2>
+        <p className="text-gray-600 text-lg">
+          Follow these simple steps to claim your discount
+        </p>
+      </div>
 
-      <div className="space-y-16">
+      <div className="grid md:grid-cols-3 gap-6">
         {steps.map((step, index) => (
           <div
-            key={index}
-            className={`flex flex-col ${
-              index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-            } gap-28 items-center`}
+            key={step.number}
+            className="relative flex flex-col items-center"
           >
-            {/* Image container - replace src with your actual image */}
-            <div className="rounded-xl overflow-hidden w-[250px] md:w-1/2 min-h-[250px] relative">
-              <img
-                src={step.image}
-                alt={`Step ${index + 1} illustration`}
-                className="object-cover"
-              />
+            {/* Step Number */}
+            <div className="flex justify-center mb-6 relative w-full">
+              <div className="w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center text-lg font-bold z-10">
+                {step.number}
+              </div>
+              {index < steps.length - 1 && (
+                <div className="hidden md:block absolute top-5 left-1/2 w-full h-0.5 bg-gray-200 -z-10" />
+              )}
             </div>
 
-            {/* Text content */}
-            <div className="w-full md:w-1/2 space-y-4">
-              <div className="flex gap-4">
-                <div className="flex-shrink-0 mt-1">{step.icon}</div>
-                <div>
-                  <h3 className="text-xl font-semibold">{step.title}</h3>
-                  <p className="text-gray-600 mt-2">{step.description}</p>
+            {/* Step Card */}
+            <Card className="bg-white border-0 h-full shadow-md w-full">
+              <CardContent className="p-6 flex flex-col items-center h-full">
+                <div
+                  className={`w-14 h-14 ${step.color} rounded-full flex items-center justify-center mb-4`}
+                >
+                  <step.icon className="w-5 h-5" />
                 </div>
-              </div>
-            </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-3 text-center">
+                  {step.title}
+                </h3>
+                <p className="text-gray-600 text-sm text-center">
+                  {step.description}
+                </p>
+              </CardContent>
+            </Card>
           </div>
         ))}
       </div>

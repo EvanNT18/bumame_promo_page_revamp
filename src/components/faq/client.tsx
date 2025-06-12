@@ -1,53 +1,55 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Minus, Plus } from "lucide-react"
-import { FAQ } from "@/types/Partner"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
-export default function FAQPage({
-    faqs
-} : {
-    faqs: FAQ[]
-}) {
-    const [expandedItem, setExpandedItem] = useState(0)
+// Import type/interface
+import { FAQ } from "@/types/Partner"; // Pastikan interface ini ada
 
+interface FAQProps {
+  faqs: FAQ[];
+}
 
-    const handleItemClick = (index: number) => {
-        setExpandedItem(expandedItem === index ? -1 : index)
-    }
-
+export default function FAQComponent({ faqs }: FAQProps) {
+  if (!faqs || faqs.length === 0) {
     return (
-        <div className="max-w-7xl mx-auto px-4 py-12">
-            <h1 className="text-4xl font-bold text-center text-[#1a1a5c] mb-12">Frequently Asked Questions</h1>
+      <div className="text-center py-12">
+        <p className="text-gray-500">No FAQs available at the moment.</p>
+      </div>
+    );
+  }
 
-            {/* FAQ Items */}
-            <div className="space-y-4">
-                {faqs.map((faq,index) => (
-                    <div
-                        key={index}
-                        className={`rounded-lg overflow-hidden py-2 transition-all duration-300 ${expandedItem === index ? "border border-gray-200 text-black" : "border border-gray-200 text-black"
-                            }`}
-                    >
-                        <button
-                            className="w-full px-6 py-4 text-left flex justify-between items-center"
-                            onClick={() => handleItemClick(index)}
-                        >
-                            <span className="font-medium text-lg">{faq.question}</span>
-                            {expandedItem === index ? (
-                                <Minus className="h-5 w-5 flex-shrink-0" />
-                            ) : (
-                                <Plus className="h-5 w-5 flex-shrink-0" />
-                            )}
-                        </button>
-                        {expandedItem === index && (
-                            <div className="px-6 py-4 pb-4">
-                                <div className="border my-2"></div>
-                                <p className="text-gray-500">{faq.answer}</p>
-                            </div>
-                        )}
-                    </div>
-                ))}
-            </div>
-        </div>
-    )
+  return (
+    <div>
+      <div className="text-center mb-12">
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">
+          Frequently Asked Questions
+        </h2>
+        <p className="text-gray-600 text-lg">
+          Everything you need to know about your voucher
+        </p>
+      </div>
+
+      <Accordion type="single" collapsible className="space-y-4">
+        {faqs.map((faq, index) => (
+          <AccordionItem
+            key={faq.id || `faq-${index}`}
+            value={`item-${index}`}
+            className="bg-white border border-gray-200 rounded-lg px-6"
+          >
+            <AccordionTrigger className="text-left font-semibold text-gray-900 hover:no-underline py-6">
+              {faq.question}
+            </AccordionTrigger>
+            <AccordionContent className="text-gray-600 pb-6">
+              {faq.answer}
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </div>
+  );
 }

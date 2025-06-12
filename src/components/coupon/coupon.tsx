@@ -51,24 +51,26 @@ const CouponPage = ({
   // Function to calculate a lighter version of the color for the background
   const lightenColor = (color: string, percent: number) => {
     // Simple lightening function - consider using a library for more accurate results
-    return `${color}${Math.floor(percent * 255).toString(16).padStart(2, '0')}`;
+    return `${color}${Math.floor(percent * 255)
+      .toString(16)
+      .padStart(2, "0")}`;
   };
 
   return (
-    <div 
+    <div
       className="py-8 px-4 md:px-6 rounded-xl"
-      style={{ 
-        backgroundColor: lightenColor(logoColor, 0.1) // 10% opacity of the logo color
+      style={{
+        backgroundColor: lightenColor(logoColor, 0.1), // 10% opacity of the logo color
       }}
     >
       <div className="max-w-7xl mx-auto">
-        <h2 
+        <h2
           className="text-2xl font-bold text-center mb-2"
           style={{ color: logoColor }}
         >
           Your Exclusive Voucher Code
         </h2>
-        <p 
+        <p
           className="text-center max-w-2xl mx-auto mb-8"
           style={{ color: logoColor }}
         >
@@ -82,7 +84,7 @@ const CouponPage = ({
               logoUrl={partner.logoUrl}
               couponCode={voucher.voucherCode}
               description={voucher.description}
-            
+              slug={voucher.slug}
             />
           ))}
         </div>
