@@ -84,7 +84,8 @@ const CouponPage = ({
               logoUrl={partner.logoUrl}
               couponCode={voucher.voucherCode}
               description={voucher.description}
-              slug={voucher.slug}
+              slug={partner.slug}
+              slugVoucher={voucher.slug}
             />
           ))}
         </div>

@@ -21,6 +21,8 @@ export interface Voucher {
   description: string;
   terms: Terms[];
   slug?:string;
+  link?: string | null;      
+  typeLink?: 'wa' | 'custom'
 }
 
 export interface Banner {

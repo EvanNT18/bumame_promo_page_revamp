@@ -3,7 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Copy } from "lucide-react";
+import { Copy, ExternalLink } from "lucide-react";
 import { useState } from "react";
 
 // Import type/interface
@@ -25,7 +25,21 @@ export default function VoucherCard({ partner, voucher }: VoucherCardProps) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const whatsappLink = `https://api.whatsapp.com/send/?text=Hi! I'd like to redeem my voucher code: ${voucher.voucherCode} for ${voucher.title}&type=custom_url&app_absent=0`;
+  // WhatsApp link menggunakan voucherCode
+  const whatsappLink = `https://api.whatsapp.com/send/?phone=6281119088808&text=Hi+Bumame%2C+I+want+to+redeem+my+code%3A+${encodeURIComponent(
+    voucher.voucherCode
+  )}`;
+
+  // Custom link dari database
+  const customLink = voucher.link || "";
+
+  const handleRedeem = () => {
+    const link = voucher.typeLink === "wa" ? whatsappLink : customLink;
+
+    if (link) {
+      window.open(link, "_blank");
+    }
+  };
 
   return (
     <div className="px-4">
@@ -84,15 +98,37 @@ export default function VoucherCard({ partner, voucher }: VoucherCardProps) {
                 </div>
               </div>
 
+              {/* Tombol Redeem Dinamis */}
               <Button
-                className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-full text-lg"
-                onClick={() => window.open(whatsappLink, "_blank")}
-                disabled={!voucher.voucherCode}
+                className={`w-full py-3 rounded-full text-lg flex items-center justify-center gap-2 ${
+                  voucher.typeLink === "wa"
+                    ? "bg-green-500 hover:bg-green-600 text-white"
+                    : "bg-blue-500 hover:bg-blue-600 text-white"
+                }`}
+                onClick={handleRedeem}
+                disabled={voucher.typeLink === "custom" && !customLink} // disable jika custom tapi link kosong
+                aria-label={
+                  voucher.typeLink === "wa"
+                    ? "Open WhatsApp to redeem voucher"
+                    : "Visit custom link to redeem voucher"
+                }
               >
-                {voucher.voucherCode
-                  ? "Redeem on WhatsApp"
-                  : "Code Not Available"}
+                {voucher.typeLink === "wa" ? (
+                  <>
+                    <span>Redeem on WhatsApp</span>
+                  </>
+                ) : (
+                  <>
+                    <ExternalLink className="w-5 h-5" />
+                    <span>Visit Custom Link</span>
+                  </>
+                )}
               </Button>
+
+              {/* Pesan jika link tidak tersedia untuk custom */}
+              {voucher.typeLink === "custom" && !customLink && (
+                <p className="text-red-500 mt-2">Custom link not available.</p>
+              )}
             </div>
           </CardContent>
         </Card>

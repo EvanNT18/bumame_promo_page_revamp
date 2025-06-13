@@ -9,12 +9,14 @@ const CouponCard = ({
   logoUrl,
   couponCode,
   slug,
+  slugVoucher,
 }: {
   title: string;
   description: string;
   logoUrl: string;
   couponCode: string;
   slug?: string;
+  slugVoucher?: string;
 }) => {
   const [copied, setCopied] = useState(false);
   const [logoColor, setLogoColor] = useState("#3b82f6");
@@ -39,7 +41,7 @@ const CouponCard = ({
 
   return (
     <Link
-      href={`/voucher/${slug}`} // Menggunakan `slug` untuk membentuk URL
+      href={`/promo/${slug}/voucher/${slugVoucher}`}
       className="relative w-full h-52 mx-auto rounded-xl overflow-hidden"
       style={{
         backgroundImage: "url('/cupon/cupon.svg')",
