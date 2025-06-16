@@ -50,8 +50,8 @@ export default function PromoLandingPage({
             throw new Error("Invalid preview voucher data structure");
           }
 
-          const previewData = JSON.parse(previewResponse.data.previewData);
-          console.log("Parsed Preview Data:", previewData);
+          const previewData = previewResponse.data.previewData;
+          console.log("Preview Data:", previewData);
 
           const previewVoucher: Voucher = {
             id: previewResponse.data.sessionId,
