@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { Gift, Clock, Shield } from "lucide-react";
+import { Gift, Clock, Shield, ArrowLeft, Eye } from "lucide-react";
 import { motion } from "framer-motion";
 import HeroBanner from "@/components/hero-banner/client";
 import VoucherCard from "@/components/couponPage/coupon";
@@ -17,36 +18,97 @@ export default function PromoLandingPage({
 }: {
   params: { slug: string; slugVoucher: string };
 }) {
-  const { slugVoucher } = params;
+  const { slug, slugVoucher } = params;
+  const searchParams = useSearchParams();
   const [partner, setPartner] = useState<Partner | null>(null);
   const [voucher, setVoucher] = useState<Voucher | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  const isPreviewMode = slugVoucher === "preview";
+  const sessionId = searchParams.get("session_id");
 
   useEffect(() => {
-    const fetchVoucherData = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
         setError(null);
+        
+        if (isPreviewMode) {
+          if (!sessionId) {
+            throw new Error("Session ID is required for preview mode");
+          }
 
-        const response = await api({
-          url: `/vouchers/slug/${slugVoucher}`,
-          method: "GET",
-        });
+          const previewResponse = await api({
+            url: `/vouchers/preview/${sessionId}`,
+            method: "GET",
+          });
 
-        console.log("Raw API Response:", response);
+          console.log("Preview Response:", previewResponse);
 
-        if (!response || !response.data || !response.data.partner) {
-          throw new Error("Invalid voucher data structure");
+          if (!previewResponse?.data?.previewData) {
+            throw new Error("Invalid preview voucher data structure");
+          }
+
+          const previewData = JSON.parse(previewResponse.data.previewData);
+          console.log("Parsed Preview Data:", previewData);
+
+          const previewVoucher: Voucher = {
+            id: previewResponse.data.sessionId,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            title: previewData.title,
+            voucherCode: previewData.voucherCode,
+            description: previewData.description,
+            terms: previewData.terms || [],
+            slug: previewData.slug,
+            link: previewData.link,
+            typeLink: previewData.typeLink,
+          };
+
+          setVoucher(previewVoucher);
+
+          const partnerResponse = await api({
+            url: `/partners/by_slug/${slug}`,
+            method: "GET",
+          });
+
+          console.log("Partner Response:", partnerResponse);
+          setPartner(partnerResponse.data);
+
+          // Update document title and favicon
+          document.title = partnerResponse.data.name;
+          const favicon = document.querySelector(
+            "link[rel='icon']"
+          ) as HTMLLinkElement;
+          if (favicon) favicon.href = partnerResponse.data.logoUrl;
+
+        } else {
+          const response = await api({
+            url: `/vouchers/slug/${slugVoucher}`,
+            method: "GET",
+          });
+
+          console.log("Raw API Response:", response);
+
+          if (!response || !response.data || !response.data.partner) {
+            throw new Error("Invalid voucher data structure");
+          }
+
+          console.log("Full Voucher Data:", response.data);
+          console.log("Banners Data:", response.data.partner.banners);
+
+          setVoucher(response.data);
+          setPartner(response.data.partner);
+
+          document.title = response.data.partner.name;
+          const favicon = document.querySelector(
+            "link[rel='icon']"
+          ) as HTMLLinkElement;
+          if (favicon) favicon.href = response.data.partner.logoUrl;
         }
-
-        console.log("Full Voucher Data:", response.data);
-        console.log("Banners Data:", response.data.partner.banners);
-
-        setVoucher(response.data);
-        setPartner(response.data.partner);
       } catch (err) {
-        console.error("Error fetching voucher:", err);
+        console.error("Error fetching data:", err);
         setError(
           err instanceof Error ? err.message : "An unknown error occurred"
         );
@@ -55,11 +117,13 @@ export default function PromoLandingPage({
       }
     };
 
-    fetchVoucherData();
-  }, [slugVoucher]);
+    fetchData();
+  }, [slugVoucher, slug, sessionId, isPreviewMode]);
 
   const whatsappLink = voucher
-    ? `https://api.whatsapp.com/send/?text=Hi! I'd like to redeem my voucher code: ${voucher.voucherCode} for ${voucher.title}&type=custom_url&app_absent=0`
+    ? isPreviewMode && voucher.link
+      ? voucher.link
+      : `https://api.whatsapp.com/send/?text=Hi! I'd like to redeem my voucher code: ${voucher.voucherCode} for ${voucher.title}&type=custom_url&app_absent=0`
     : "#";
 
   const scrollToVoucherCode = () => {
@@ -67,6 +131,10 @@ export default function PromoLandingPage({
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const handleBackToVoucherManagement = () => {
+    window.close();
   };
 
   if (loading || !partner || !voucher) {
@@ -79,6 +147,30 @@ export default function PromoLandingPage({
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Preview Mode Indicator and Back Button */}
+      {isPreviewMode && (
+        <div className="bg-orange-100 border-b border-orange-200">
+          <div className="container mx-auto px-4 py-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-orange-800">
+                <Eye className="w-5 h-5" />
+                <span className="font-medium">Mode Preview</span>
+                <span className="text-sm text-orange-600">
+                  - Ini adalah tampilan preview voucher Anda
+                </span>
+              </div>
+              <button
+                onClick={handleBackToVoucherManagement}
+                className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-md transition-colors text-sm font-medium"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Kembali ke Voucher Management
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Hero Banner Section */}
       <HeroBanner
         partner={partner}
