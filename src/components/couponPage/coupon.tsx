@@ -7,7 +7,7 @@ import { Copy, ExternalLink } from "lucide-react";
 import { useState } from "react";
 
 // Import type/interface
-import { Partner, Voucher } from "@/types/Partner";
+import type { Partner, Voucher } from "@/types/Partner";
 
 interface VoucherCardProps {
   partner: Partner;
@@ -25,12 +25,12 @@ export default function VoucherCard({ partner, voucher }: VoucherCardProps) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // WhatsApp link menggunakan voucherCode
+  // WhatsApp link using voucherCode
   const whatsappLink = `https://api.whatsapp.com/send/?phone=6281119088808&text=Hi+Bumame%2C+I+want+to+redeem+my+code%3A+${encodeURIComponent(
     voucher.voucherCode
   )}`;
 
-  // Custom link dari database
+  // Custom link from database
   const customLink = voucher.link || "";
 
   const handleRedeem = () => {
@@ -43,36 +43,36 @@ export default function VoucherCard({ partner, voucher }: VoucherCardProps) {
 
   return (
     <div className="px-4">
-      {/* Centered content with left/right spacing */}
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">
+      {/* Centered content with responsive spacing */}
+      <div className="text-center mb-6 sm:mb-8">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
           Your Exclusive Voucher
         </h2>
-        <p className="text-gray-600">
+        <p className="text-sm sm:text-base text-gray-600 px-4">
           Copy this code and share it with our team to claim your discount
         </p>
       </div>
 
-      {/* Card Container */}
-      <div className="w-full max-w-[50%] mx-auto">
+      {/* Card Container - Responsive width */}
+      <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl mx-auto">
         <Card className="bg-white shadow-xl border-0 overflow-hidden w-full">
-          <CardContent className="p-8">
+          <CardContent className="p-4 sm:p-6 lg:p-8">
             <div className="text-center">
-              <Badge className="bg-purple-600 text-white px-4 py-2 text-sm mb-6">
+              <Badge className="bg-purple-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm mb-4 sm:mb-6">
                 {partner.name || "Partner"}
               </Badge>
 
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-2">
                 Special Discount {voucher.title ?? ""}
               </h3>
 
-              <p className="text-gray-600 mb-8">
+              <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8 px-2">
                 {voucher.description || "No description available."}
               </p>
 
-              <div className="mb-6">
+              <div className="mb-4 sm:mb-6">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-purple-600">
+                  <span className="text-xs sm:text-sm font-medium text-purple-600">
                     Voucher Code
                   </span>
                   <Button
@@ -80,33 +80,33 @@ export default function VoucherCard({ partner, voucher }: VoucherCardProps) {
                     size="sm"
                     onClick={copyToClipboard}
                     disabled={!voucher.voucherCode}
-                    className={`text-purple-600 hover:text-purple-700 ${
+                    className={`text-purple-600 hover:text-purple-700 text-xs sm:text-sm p-1 sm:p-2 ${
                       !voucher.voucherCode
                         ? "opacity-50 cursor-not-allowed"
                         : ""
                     }`}
                   >
-                    <Copy className="w-4 h-4 mr-1" />
+                    <Copy className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                     {copied ? "Copied!" : "Copy"}
                   </Button>
                 </div>
 
-                <div className="bg-gray-50 rounded-lg p-4 border-2 border-dashed border-gray-200">
-                  <code className="text-2xl font-bold text-purple-600 tracking-wider">
+                <div className="bg-gray-50 rounded-lg p-3 sm:p-4 border-2 border-dashed border-gray-200">
+                  <code className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-600 tracking-wider break-all">
                     {voucher.voucherCode || "N/A"}
                   </code>
                 </div>
               </div>
 
-              {/* Tombol Redeem Dinamis */}
+              {/* Dynamic Redeem Button */}
               <Button
-                className={`w-full py-3 rounded-full text-lg flex items-center justify-center gap-2 ${
+                className={`w-full py-2.5 sm:py-3 rounded-full text-sm sm:text-base lg:text-lg flex items-center justify-center gap-2 ${
                   voucher.typeLink === "wa"
                     ? "bg-green-500 hover:bg-green-600 text-white"
                     : "bg-blue-500 hover:bg-blue-600 text-white"
                 }`}
                 onClick={handleRedeem}
-                disabled={voucher.typeLink === "custom" && !customLink} // disable jika custom tapi link kosong
+                disabled={voucher.typeLink === "custom" && !customLink}
                 aria-label={
                   voucher.typeLink === "wa"
                     ? "Open WhatsApp to redeem voucher"
@@ -115,19 +115,23 @@ export default function VoucherCard({ partner, voucher }: VoucherCardProps) {
               >
                 {voucher.typeLink === "wa" ? (
                   <>
-                    <span>Redeem on WhatsApp</span>
+                    <span className="hidden sm:inline">Redeem on WhatsApp</span>
+                    <span className="sm:hidden">WhatsApp</span>
                   </>
                 ) : (
                   <>
-                    <ExternalLink className="w-5 h-5" />
-                    <span>Visit Custom Link</span>
+                    <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span className="hidden sm:inline">Visit to Redeem</span>
+                    <span className="sm:hidden">Visit to Redeem</span>
                   </>
                 )}
               </Button>
 
-              {/* Pesan jika link tidak tersedia untuk custom */}
+              {/* Error message for unavailable custom link */}
               {voucher.typeLink === "custom" && !customLink && (
-                <p className="text-red-500 mt-2">Custom link not available.</p>
+                <p className="text-red-500 mt-2 text-xs sm:text-sm">
+                  Custom link not available.
+                </p>
               )}
             </div>
           </CardContent>

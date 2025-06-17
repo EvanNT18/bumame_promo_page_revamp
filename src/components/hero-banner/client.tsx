@@ -1,6 +1,4 @@
 "use client";
-
-import Image from "next/image";
 import VoucherActions from "@/components/voucher-actions/client";
 import BannerPage from "@/components/banner/client";
 import { Badge } from "@/components/ui/badge";
@@ -23,28 +21,23 @@ export default function HeroBanner({
       {/* Banner Slider */}
       <BannerPage banners={partner.banners} />
 
-      {/* Overlay Konten - hanya teks dan tombol utama */}
-      <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-        <div className="text-center text-white px-4 max-w-4xl mx-auto pointer-events-auto flex flex-col items-center justify-center">
-          {/* Geser Badge ke atas */}
-          <div className="mt-2 mb-52">
-            {" "}
-            {/* Tambahkan margin top (mt-8) */}
-            <Badge
-              variant="secondary"
-              className="bg-white/20 text-white border-white/30 px-4 py-2 text-sm rounded-full"
-            >
-              ⭐ Exclusive from {partner.name}
-            </Badge>
-          </div>
+      {/* Badge - posisi diturunkan */}
+      <div className="absolute top-12 left-1/2 transform -translate-x-1/2 z-20 pointer-events-none sm:top-16">
+        <Badge
+          variant="secondary"
+          className="bg-white/20 text-white border-white/30 px-2 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm rounded-full backdrop-blur-sm pointer-events-auto"
+        >
+          ⭐ Exclusive from {partner.name}
+        </Badge>
+      </div>
 
-          {/* Tombol utama */}
-          <VoucherActions
-            voucherLink={voucher.link}
-            typeLink={voucher.typeLink}
-            scrollToVoucherCode={onViewCodeClick}
-          />
-        </div>
+      {/* Action buttons - posisi tetap */}
+      <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-20 pointer-events-auto w-full max-w-xs sm:max-w-2xl sm:bottom-16">
+        <VoucherActions
+          voucherLink={voucher.link}
+          typeLink={voucher.typeLink}
+          scrollToVoucherCode={onViewCodeClick}
+        />
       </div>
     </div>
   );
