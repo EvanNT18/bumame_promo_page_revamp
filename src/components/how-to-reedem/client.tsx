@@ -7,21 +7,21 @@ const steps = [
     title: "Copy Your Code",
     description: "Tap the copy button to save your voucher code",
     icon: Clipboard,
-    color: "bg-purple-100 text-purple-600",
+    color: "bg-blue-100 text-[#204fab]",
   },
   {
     number: 2,
     title: "Contact via WhatsApp",
     description: "Click the WhatsApp button to start your conversation",
     icon: MessageSquare,
-    color: "bg-purple-100 text-purple-600",
+    color: "bg-blue-100 text-[#204fab]",
   },
   {
     number: 3,
     title: "Share Your Code",
     description: "Paste your voucher code in the chat to apply discount",
     icon: Share2,
-    color: "bg-purple-100 text-purple-600",
+    color: "bg-blue-100 text-[#204fab]",
   },
 ];
 
@@ -45,7 +45,7 @@ export default function HowToRedeem() {
           >
             {/* Step Number with connecting line */}
             <div className="flex justify-center mb-4 sm:mb-6 relative w-full">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm sm:text-lg font-bold z-10">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#204fab] text-white rounded-full flex items-center justify-center text-sm sm:text-lg font-bold z-10">
                 {step.number}
               </div>
               {index < steps.length - 1 && (

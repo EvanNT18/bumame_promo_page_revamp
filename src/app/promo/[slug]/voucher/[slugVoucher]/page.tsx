@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { ArrowLeft, Eye } from "lucide-react";
-import HeroBanner from "@/components/hero-banner/client";
+import Banner from "@/components/banner/client";
 import VoucherCard from "@/components/couponPage/coupon";
 import HowToRedeem from "@/components/how-to-reedem/client";
 import FAQ from "@/components/faq/client";
@@ -174,12 +174,9 @@ export default function PromoLandingPage({
       )}
 
       {/* Hero Banner Section */}
-      <HeroBanner
-        partner={partner}
-        voucher={voucher}
-        whatsappLink={whatsappLink}
-        onViewCodeClick={scrollToVoucherCode}
-      />
+      <section className="relative overflow-hidden">
+        <Banner banners={partner.banners} />
+      </section>
 
       {/* Voucher Code Section */}
       <section id="voucher-code" className="py-8 sm:py-12 lg:py-16 bg-white">

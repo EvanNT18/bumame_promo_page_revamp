@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { ChatBubble } from "@/components/common/chat-us/client";
+import dynamic from "next/dynamic";
 import ScrollToTop from "@/components/common/scroll-to-top/client";
 
+const ChatBubble = dynamic(() => import("@/components/common/chat-us/client"), {
+  ssr: false,
+});
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

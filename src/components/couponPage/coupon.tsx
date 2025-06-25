@@ -43,25 +43,11 @@ export default function VoucherCard({ partner, voucher }: VoucherCardProps) {
 
   return (
     <div className="px-4">
-      {/* Centered content with responsive spacing */}
-      <div className="text-center mb-6 sm:mb-8">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-          Your Exclusive Voucher
-        </h2>
-        <p className="text-sm sm:text-base text-gray-600 px-4">
-          Copy this code and share it with our team to claim your discount
-        </p>
-      </div>
-
       {/* Card Container - Responsive width */}
       <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl mx-auto">
         <Card className="bg-white shadow-xl border-0 overflow-hidden w-full">
           <CardContent className="p-4 sm:p-6 lg:p-8">
             <div className="text-center">
-              <Badge className="bg-purple-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm mb-4 sm:mb-6">
-                {partner.name || "Partner"}
-              </Badge>
-
               <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-2">
                 Special Discount {voucher.title ?? ""}
               </h3>
@@ -72,7 +58,7 @@ export default function VoucherCard({ partner, voucher }: VoucherCardProps) {
 
               <div className="mb-4 sm:mb-6">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs sm:text-sm font-medium text-purple-600">
+                  <span className="text-xs sm:text-sm font-medium text-[#204fab]">
                     Voucher Code
                   </span>
                   <Button
@@ -80,7 +66,7 @@ export default function VoucherCard({ partner, voucher }: VoucherCardProps) {
                     size="sm"
                     onClick={copyToClipboard}
                     disabled={!voucher.voucherCode}
-                    className={`text-purple-600 hover:text-purple-700 text-xs sm:text-sm p-1 sm:p-2 ${
+                    className={`text-[#204fab] hover:text-[#204fab] text-xs sm:text-sm p-1 sm:p-2 ${
                       !voucher.voucherCode
                         ? "opacity-50 cursor-not-allowed"
                         : ""
@@ -92,7 +78,7 @@ export default function VoucherCard({ partner, voucher }: VoucherCardProps) {
                 </div>
 
                 <div className="bg-gray-50 rounded-lg p-3 sm:p-4 border-2 border-dashed border-gray-200">
-                  <code className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-600 tracking-wider break-all">
+                  <code className="text-lg sm:text-xl lg:text-2xl font-bold text-[#204fab] tracking-wider break-all">
                     {voucher.voucherCode || "N/A"}
                   </code>
                 </div>
@@ -103,7 +89,7 @@ export default function VoucherCard({ partner, voucher }: VoucherCardProps) {
                 className={`w-full py-2.5 sm:py-3 rounded-full text-sm sm:text-base lg:text-lg flex items-center justify-center gap-2 ${
                   voucher.typeLink === "wa"
                     ? "bg-green-500 hover:bg-green-600 text-white"
-                    : "bg-blue-500 hover:bg-blue-600 text-white"
+                    : "bg-[#204fab] hover:bg-[#204fab] text-white"
                 }`}
                 onClick={handleRedeem}
                 disabled={voucher.typeLink === "custom" && !customLink}

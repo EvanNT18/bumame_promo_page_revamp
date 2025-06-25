@@ -20,10 +20,17 @@ export default function LandingPagePromo({
   const { slug } = params;
   const [partner, setPartner] = useState<Partner | null>(null);
   const [loading, setLoading] = useState(true);
+  const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
     fetchPartner();
   }, []);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) return null;
 
   async function fetchPartner() {
     try {
@@ -61,7 +68,7 @@ export default function LandingPagePromo({
       </section>
 
       {/* Subtitles */}
-      <section className="py-12 bg-gray-50">
+      <section className="py-0 bg-gray-50">
         <div className="container mx-auto px-4">
           <Subtitle subtitles={partner.subtitles} />
         </div>
