@@ -1,63 +1,35 @@
-"use client";
-
+// src/app/promo/[slug]/page.tsx
 import Banner from "@/components/banner/client";
 import FAQ from "@/components/faq/client";
 import TermsAndConditions from "@/components/terms-and-condition/client";
 import Subtitle from "@/components/subtitle/client";
 import HowToRedeem from "@/components/how-to-reedem/client";
 import CouponPage from "@/components/coupon/coupon";
-
-import { useState, useEffect } from "react";
+import { notFound } from "next/navigation";
 import { Partner } from "@/types/Partner";
 import api from "@/lib/api";
 import Image from "next/image";
 
-export default function LandingPagePromo({
+export default async function LandingPagePromo({
   params,
 }: {
   params: { slug: string };
 }) {
   const { slug } = params;
-  const [partner, setPartner] = useState<Partner | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [hasMounted, setHasMounted] = useState(false);
 
-  useEffect(() => {
-    fetchPartner();
-  }, []);
+  let partner: Partner;
 
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
+  try {
+    const res = await api({
+      url: `/partners/by_slug/${slug}`,
+    });
 
-  if (!hasMounted) return null;
+    if (!res.data) return notFound();
 
-  async function fetchPartner() {
-    try {
-      const res = await api({
-        url: `/partners/by_slug/${slug}`,
-      });
-
-      setPartner(res.data);
-      document.title = res.data.name;
-
-      const favicon = document.querySelector(
-        "link[rel='icon']"
-      ) as HTMLLinkElement;
-      if (favicon) favicon.href = res.data.logoUrl;
-    } catch (err) {
-      console.error("Failed to load partner:", err);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  if (loading || !partner) {
-    return (
-      <div className="fixed inset-0 bg-gray-50 flex items-center justify-center">
-        <div className="h-12 w-12 border-b-2 border-purple-500 rounded-full animate-spin"></div>
-      </div>
-    );
+    partner = res.data;
+  } catch (err) {
+    console.error("Failed to load partner:", err);
+    return notFound();
   }
 
   return (

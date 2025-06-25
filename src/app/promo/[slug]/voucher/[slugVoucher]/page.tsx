@@ -135,10 +135,23 @@ export default function PromoLandingPage({
     window.close();
   };
 
-  if (loading || !partner || !voucher) {
+  if (loading) {
     return (
       <div className="fixed inset-0 bg-gray-50 flex items-center justify-center">
         <div className="h-12 w-12 border-b-2 border-purple-500 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (error || !partner || !voucher) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center px-4 text-center bg-white">
+        <h1 className="text-4xl font-bold text-gray-800 mb-4">
+          404 - Voucher Tidak Ditemukan
+        </h1>
+        <p className="text-gray-600 text-base">
+          Maaf, voucher yang kamu cari tidak tersedia atau sudah tidak berlaku.
+        </p>
       </div>
     );
   }
